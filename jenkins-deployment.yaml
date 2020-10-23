@@ -1,0 +1,50 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: jenkins-dev
+  annotations:
+    kompose.cmd: /snap/kompose/19/kompose-linux-amd64 convert
+    kompose.version: 1.21.0 (992df58d8)
+  creationTimestamp: null
+  labels:
+    deployment: jenkins-dev
+    io.kompose.service: jenkins-dev
+    env: dev
+  name: jenkins-dev
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: jenkins-dev
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: /snap/kompose/19/kompose-linux-amd64 convert
+        kompose.version: 1.21.0 (992df58d8)
+      creationTimestamp: null
+      labels:
+        io.kompose.network/dev-net: "true"
+        io.kompose.service: jenkins-dev
+    spec:
+      containers:
+      - image: jenkins/jenkins
+        imagePullPolicy: ""
+        name: jenkins-dev
+        ports:
+        - containerPort: 8080
+        env:
+        - name: "PORT"
+          value: "8080"
+        resources: {}
+        volumeMounts:
+        - mountPath: "/home/jenkins/jenkins-data/jenkins-home" 
+          name: jenkins-pvc
+      restartPolicy: Always
+      serviceAccountName: ""
+      volumes:
+      - name: jenkins-pvc
+        persistentVolumeClaim:
+          claimName: jenkins-pvc
+status: {}

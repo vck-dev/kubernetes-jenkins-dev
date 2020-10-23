@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: jenkins-home
+  labels:
+    env: dev
+    name: jenkins-home
+  namespace: jenkins-dev
+spec:
+  storageClassName: ""
+  capacity:
+    storage: 6Gi
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: "/home/jenkins/jenkins-data/jenkins-home"

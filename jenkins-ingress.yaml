@@ -1,0 +1,21 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: jenkins-dev
+  labels:
+    deployment: jenkins-dev
+    env: dev
+  annotations:
+spec:
+  rules:
+    - host: jenkins-dev.lab
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: jenkins-dev
+                port:
+                  number: 8080
+

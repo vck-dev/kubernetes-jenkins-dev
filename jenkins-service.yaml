@@ -1,0 +1,22 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: jenkins-svc
+  annotations:
+    kompose.cmd: /snap/kompose/19/kompose-linux-amd64 convert
+    kompose.version: 1.21.0 (992df58d8)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: jenkins-dev
+    namespace: jenkins-dev
+spec:
+  type: NodePort
+  ports:
+  - name: "8080"
+    protocol: TCP
+    port: 8080
+    targetPort: 8080
+  selector:
+    deployment: jenkins-dev
+status:
+  loadBalancer: {}
